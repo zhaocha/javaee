@@ -8,10 +8,10 @@
 
 
 ##依赖
-    ###前端
+    前端
         1.Bootstrap
         2.JQuery
         3.ECharts
-    ###后端
+    后端
         1.Hibernate
         2.Struts
