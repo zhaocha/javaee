@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.copyfu.entity.Student" table="student" catalog="mis">
+		<id name="stu_id" type="java.lang.Integer">
+			<column name="stu_id" />
+		</id>
+		<property name="stu_name" type="java.lang.String">
+			<column name="stu_name"  />
+		</property>
+		<property name="sex" type="java.lang.String">
+			<column name="sex" />
+		</property>
+		<property name="age" type="java.lang.Integer">
+			<column name="age" />
+		</property>
+		<property name="stu_class" type="java.lang.String">
+			<column name="stu_class" />
+		</property>
+		<property name="phone" type="java.lang.String">
+			<column name="phone" />
+		</property>
+		<property name="address" type="java.lang.String">
+			<column name="address" />
+		</property>
+	</class>
+</hibernate-mapping>

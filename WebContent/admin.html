@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>admin</title>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.css">
+<script src="http://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+<script src="/javaee/common/js/echarts.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="http://localhost:8080/javaee/admin.html">学生基本信息管理系统</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="javascript:void(0);" onclick="selAllStu()">查看学生信息</a></li>
+            <li><a href="javascript:void(0);" onclick="newForm()" data-toggle="modal" data-target="#add">添加学生信息</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    统计学生信息 <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:void(0);" onclick="classPerson()">统计各个班级人数</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0);" onclick="stuSex()" >统计学生性别</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:void(0);" onclick="stuAge()" >统计学生年龄</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    </div>
+	</nav>
+	
+	<container-fluid class="">
+		<div class="col-lg-2 col-md-2 tb"></div>
+		<div id="show_content" style="width: 900px;height:600px;" class="col-lg-8 col-md-8 tb"></div>
+		<div class="col-lg-2 col-md-2 tb"></div>
+	</container>
+	
+	<!-- Modal update-->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改学生信息</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal" role="form" id="form-update">
+  <div class="form-group">
+    <label for="up_stu_id" class="col-sm-2 control-label">学号</label>
+    <div class="col-sm-10">
+      <input name="stu_id" id="up_stu_id" type="text" class="form-control" placeholder="学号">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="up_stu_name" class="col-sm-2 control-label">姓名</label>
+    <div class="col-sm-10">
+      <input name="stu_name" id="up_stu_name" type="text" class="form-control" placeholder="姓名">
+    </div>
+  </div>
+  
+  <div class="form-group">
+  	<label class="col-sm-2 control-label">性别</label>
+  	<div class="col-sm-10">
+  		<input type="radio" name="up_sex" id="man" value="男"> 男
+  		&nbsp;&nbsp;&nbsp;&nbsp;
+  		<input type="radio" name="up_sex" id="woman" value="女"> 女
+  	</div>
+  </div>
+  
+  <div class="form-group">
+    <label for="up_age" class="col-sm-2 control-label">年龄</label>
+    <div class="col-sm-10">
+      <input name="age" id="up_age" type="text" class="form-control" placeholder="年龄">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="up_stu_class" class="col-sm-2 control-label">班级</label>
+    <div class="col-sm-10">
+      <input name="stu_class" id="up_stu_class" type="text" class="form-control" placeholder="班级">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="up_phone" class="col-sm-2 control-label">电话</label>
+    <div class="col-sm-10">
+      <input type="text" id="up_phone" name="phone" class="form-control"  placeholder="电话">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="up_address" class="col-sm-2 control-label">家庭住址</label>
+    <div class="col-sm-10">
+      <input type="text" id="up_address" name="address" class="form-control"  placeholder="家庭住址">
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">提交修改</button>
+      </div>
+</form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+	<!-- Modal add-->
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加学生信息</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal" role="form" id="form-add">
+  <div class="form-group">
+    <label for="stu_id" class="col-sm-2 control-label">学号</label>
+    <div class="col-sm-10">
+      <input name="stu_id" id="stu_id" type="text" class="form-control" placeholder="学号">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="stu_name" class="col-sm-2 control-label">姓名</label>
+    <div class="col-sm-10">
+      <input name="stu_name" id="stu_name" type="text" class="form-control" placeholder="姓名">
+    </div>
+  </div>
+  
+  <div class="form-group">
+  	<label class="col-sm-2 control-label">性别</label>
+  	<div class="col-sm-10">
+  		<input type="radio" name="sex"  value="男"> 男
+  		&nbsp;&nbsp;&nbsp;&nbsp;
+  		<input type="radio" name="sex"  value="女"> 女
+  	</div>
+  </div>
+  
+  <div class="form-group">
+    <label for="age" class="col-sm-2 control-label">年龄</label>
+    <div class="col-sm-10">
+      <input name="age" id="age" type="text" class="form-control" placeholder="年龄">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="stu_class" class="col-sm-2 control-label">班级</label>
+    <div class="col-sm-10">
+      <input name="stu_class" id="stu_class" type="text" class="form-control" placeholder="班级">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="phone" class="col-sm-2 control-label">电话</label>
+    <div class="col-sm-10">
+      <input type="text" id="phone" name="phone" class="form-control"  placeholder="电话">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="" class="col-sm-2 control-label">家庭住址</label>
+    <div class="col-sm-10">
+      <input type="text" id="address" name="address" class="form-control"  placeholder="家庭住址">
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">添加信息</button>
+      </div>
+</form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+	
+	<script src="/javaee/common/js/admin.js"></script>
+</body>
+</html>
